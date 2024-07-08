@@ -1,0 +1,24 @@
+---
+title: "Linguistic Data Analysis - Final Project"
+author: "Benedict Wuethrich"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Everything related to this project can be found in [this GitHub repository](https://github.com/BendixY/LDAR-FP-BW).
+
+```{r packages, include=False}
+
+library(tidyverse)
+library(here)
+library(ggmap)
+library(ggthemes)
+library(maps)
+library(viridis)
+```
+

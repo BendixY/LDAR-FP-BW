@@ -1,0 +1,1 @@
+This is my attempt at a final project for the LDAR class of the Linguistics Department at University of Berne in Spring Semester 2024.
