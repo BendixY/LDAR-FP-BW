@@ -1,11 +1,11 @@
 
 
 
-map_AUS <- get_stadiamap(bbox = c(left = 112, 
+map_AUS <- get_stadiamap(bbox = c(left = 113, 
                                   bottom = -44,
                                   right = 154,
-                                  top = -11), #here the map boundaries given by ChatGPT earlier came in handy again
-                         zoom = 5,
+                                  top = -9), #here the map boundaries given by ChatGPT earlier came in handy again
+                         zoom = 3,
                          maptype = "stamen_toner_lite",
                          color = "color")
 ggmap(map_AUS)
@@ -17,12 +17,11 @@ map_AUS_family <- ggmap(map_AUS) +
              aes(x = Longitude,
                  y = Latitude,
                  color = Family),
-             size = 9) +
-  scale_color_colorblind() + #better color
+             show.legend = T) +
+  scale_color_viridis(discrete = T) + #better color
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
-        legend.title = element_text(size =12)) +
-  #        legend.position.inside = c(0.9,0)) + #we can still modify it to our liking 
+        legend.title = element_text(size = 12)) +
   labs(color = "Families")
 map_AUS_family
 
