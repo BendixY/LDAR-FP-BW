@@ -4,6 +4,7 @@
 
 library(here)
 library(tidyverse)
+library(rcldf)
 
 
 
@@ -11,6 +12,11 @@ library(tidyverse)
 
 phoible <- read_csv(here("data/phoible/phoible.csv")) 
 glimpse(phoible)
+
+wals_cldf <- cldf(here("data/WALS/cldf"))
+summary(wals_cldf)
+
+names(wals_cldf$tables)
 
 wals_lang <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
   filter( #Latitude >= -44 & Latitude <= -11 & 

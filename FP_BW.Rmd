@@ -23,26 +23,36 @@ library(ggmap)
 library(ggthemes)
 library(maps)
 library(viridis)
+library(rcldf)
 ```
 ## Introduction
 On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that aren't thought of as Pama-Nyungan. Exactly which langauges belong to which category is an ongoing debate.
 
-Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both are having to compete against the English language.
+Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both are having to compete against the English language.  
+
 
 
 ## Data Wrangling
-The data wrangling for this project was relatively simple, since the datasets provided by WALS and phoible respectively are quite clean already. 
+The data wrangling for this project was relatively simple, since the datasets provided by WALS and phoible respectively are quite clean already. I created a few different subsets of data which are used for specific tasks.
 ```{r data_wrangling, include=FALSE}
 #loading in data from phoible and WALS and limiting them to languages spoken in Australia
 
 phoible <- read_csv(here("data/phoible/phoible.csv")) 
 glimpse(phoible)
 
+
+
 wals_aus <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
   filter( #Latitude >= -44 & Latitude <= -10 & 
            #Longitude >= 112 & Longitude <= 154 &
            Macroarea == "Australia")
 #boundaries were determined with the help of ChatGPT 4.o but ended up not being helpful enough. i left the code in in case i might need it at another time
+
+
+#The following mutation is used for a map that is only supposed to show PN and nPN languges. While reductionist, I want to make it easier to read, so I mutate all nPN languages to simply "Non-Pama-Nyungan"
+
+wals_nPN <- wals_aus %>% 
+  mutate(Family = if_else(Family == "Pama-Nyungan", "Pama-Nyungan", "Non-Pama-Nyungan"))
 glimpse(wals_aus)
 ```
 
@@ -60,18 +70,18 @@ ggmap(map_AUS)
 
 
 map_AUS_family <- ggmap(map_AUS) +
-  geom_point(data = wals_aus,
+  geom_point(data = wals_nPN,
              aes(x = Longitude,
                  y = Latitude,
                  color = Family),
-             size = 9) +
+             show.legend = T) +
   scale_color_colorblind() + #better color
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
-        legend.title = element_text(size =12)) +
-  #        legend.position.inside = c(0.9,0)) + #we can still modify it to our liking 
+        legend.title = element_text(size = 12)) +
   labs(color = "Families")
 map_AUS_family
+
 
 ```
 
@@ -82,6 +92,7 @@ Bouckaert, Remco R., Claire Bowern & Quentin D. Atkinson (2018). The origin and 
 Bowern, Claire / Koch, Harold (Hrsg.) (2004): Australian Languages. Classification and the comparative method. Amsterdam / Philadelphia: John Benjamins.  
 Dixon, R.M.W. (1980): The Languages of Australia. Cambridge: Cambridge University Press.  
 Dixon, R.M.W. (2004): Australian Languages. Their Nature and Development. Cambridge: Cambridge University Press.  
+Greenhill, Simon (2024). rcldf: rcldf - Read Linguistic Data In The Cross Linguistic Data Format (CLDF)_. R package version 1.2.0, commit 3979a89dbe4db653873caca62212fc07ebb966e9, https://github.com/SimonGreenhill/rcldf  
 Kahle, D., Wickham, H. ggmap: Spatial Visualization with ggplot2. The R Journal, 5(1), 144-161. http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf  
 Matthew S. Dryer. (2013) Order of Subject, Object and Verb. In: Dryer, Matthew S. & Haspelmath, Martin (eds.) WALS Online (v2020.3) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7385533 (Available online at http://wals.info/chapter/81, Accessed on 2024-04-16.)  
 O’Grady, G. N. (1998). Toward a Proto-Pama-Nyungan Stem List, Part I: Sets J1-J25. Oceanic Linguistics, 37(2), 209–233.  
