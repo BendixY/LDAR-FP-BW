@@ -1,5 +1,10 @@
+library(tidyverse)
+library(here)
+library(ggmap)
+library(ggthemes)
+library(maps)
 
-
+#This script assumes you have run the DataWrangling.R script beforehand, as it mainly builds on it instead of repeating it.
 
 map_AUS <- get_stadiamap(bbox = c(left = 113, 
                                   bottom = -44,
@@ -36,3 +41,37 @@ ggsave(here("output/map_AUS_family.png"),
        height = 30,
        units = "cm",
        dpi = 600)
+
+
+
+#a different map that shows the dominant word order of Australian languages
+#first we need to filter for data that entails the Word order. This is chapter 81 of WALS. we further seperate them by PN and nPN
+
+##PN
+map_PN_worder <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_PN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = WordOrder),
+             show.legend = T) +
+  theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Dominant Word Order")
+map_PN_worder
+
+
+##nPN
+map_nPN_worder <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_nPN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = WordOrder),
+             show.legend = T) +
+  theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Dominant Word Order")
+map_nPN_worder
+
+
