@@ -51,7 +51,7 @@ wals_worder_nPN <- wals_value %>%
   mutate(WordOrder = case_when( #this bit was added as three languages didn't have entries in the new WordOrder Column. Thankfully the necessary information was in the Column next to it, so we add it back in
     Language_ID.ValueTable == "ung" ~ "OVS",
     Language_ID.ValueTable == "myi" ~ "OVS",
-    Language_ID.ValueTable == "grr" ~ "SVO or VOS",  
+    Language_ID.ValueTable == "grr" ~ "No dominant order",  
     TRUE ~ WordOrder))
 glimpse(wals_worder_nPN)
 

@@ -91,7 +91,7 @@ wals_worder_nPN <- wals_value %>%
   mutate(WordOrder = case_when( #this bit was added as three languages didn't have entries in the new WordOrder Column. Thankfully the necessary information was in the Column next to it, so we add it back in
     Language_ID.ValueTable == "ung" ~ "OVS",
     Language_ID.ValueTable == "myi" ~ "OVS",
-    Language_ID.ValueTable == "grr" ~ "SVO or VOS",  
+    Language_ID.ValueTable == "grr" ~ "No dominant order",  
     TRUE ~ WordOrder))
 glimpse(wals_worder_nPN)
 
@@ -206,7 +206,7 @@ histo_PN_worder <- ggplot(data = wals_worder_PN,
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+  ggtitle("Frequency of Word Orders in the Pama-Nyunga Languages") # adding a descriptive title
 histo_PN_worder #getting a preview
 
 
@@ -220,11 +220,19 @@ histo_nPN_worder <- ggplot(data = wals_worder_nPN,
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+  ggtitle("Frequency of Word Orders in the Non-Pama-Nyungan Languages") # adding a descriptive title
 histo_nPN_worder #getting a preview
 
 
 ```
+With this additional information, we can now more clearly see that the Pama-Nyungan languages have a very clear tendency of having a SOV word order, as almost half of all languages in the dataset have this as their dominant word order. The trend of starting off a sentence with the Subject continues, with six more languages having a SVO word order. Having no dominant word order is also quite common in this dataset, with a tital of 18 languages fitting that profile. Only a small minority, a total of three languages, have a word order that does not fit those three major categories.  
+The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majoriy of those who do have one, will have one that starts their word order with the subject of the sentence. Opposing the Pama-Nyungan languages and their tendencies is the fact that here the amount of languages with a SOV word order outnumber those with a SVO order.
+
+
+## Discussion
+
+
+
 
 \newpage
 ## Bibliography

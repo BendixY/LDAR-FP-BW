@@ -21,7 +21,7 @@ histo_PN_worder <- ggplot(data = wals_worder_PN,
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+  ggtitle("Frequency of Word Orders in the Pama-Nyunga Languages") # adding a descriptive title
 histo_PN_worder #getting a preview
 
 ##saving them
@@ -43,7 +43,7 @@ histo_nPN_worder <- ggplot(data = wals_worder_nPN,
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+  ggtitle("Frequency of Word Orders in the Non-Pama-Nyunga Languages") # adding a descriptive title
 histo_nPN_worder #getting a preview
 
 ##saving them
