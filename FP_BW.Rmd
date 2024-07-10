@@ -28,19 +28,17 @@ library(rcldf)
 ## Introduction
 On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that aren't thought of as Pama-Nyungan. Exactly which langauges belong to which category is an ongoing debate.
 
+In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categories like word order or phoneme inventory. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category.
+
 Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both are having to compete against the English language.  
 
 
 
 ## Data Wrangling
-The data wrangling for this project was relatively simple, since the datasets provided by WALS and phoible respectively are quite clean already. I created a few different subsets of data which are used for specific tasks.
+The data wrangling for this project was relatively simple, since the data sets provided by WALS and phoible respectively are quite clean already. The biggest challenge posed was figuring out how to load cldf datasets into R and how to manipulate them appropriately. I struggled with that part for a while as it also had me refresh my memory on how the different join functions would behave.
+I created a few different subsets of data which are used for specific tasks.
 ```{r data_wrangling, include=FALSE}
 #loading in data from phoible and WALS and limiting them to languages spoken in Australia
-
-phoible <- read_csv(here("data/phoible/phoible.csv")) 
-glimpse(phoible)
-
-
 
 wals_aus <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
   filter( #Latitude >= -44 & Latitude <= -10 & 
