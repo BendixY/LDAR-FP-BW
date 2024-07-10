@@ -38,7 +38,7 @@ In this paper I will be looking at the geographical distribution of the Australi
 ## Data
 The data used for this project originates from the cldf data by WALS. I initially intended to use the phoible cldf data as well, but ended up deciding against it as it did not add an appropriate amount of value to the final product.
 
-The data wrangling for this project was relatively extensive. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate dataframes eficiently and how to structure the creation of new dataframes from the given sets without creating too much redundancy.
+The data wrangling for this project was manageable, but took a lot of work to get started. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate dataframes eficiently and how to structure the creation of new dataframes from the given sets without creating too much redundancy.
 I created a seperate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required dataframes. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. The seperate scripts can be found in the corresponding GitHub repository, a link to which can be found at the end of this document.
 
 I started out by loading in the cldf using the rcldf package. From this a wide dataframe was created using the Value Table and filtering for Australian languages only.
@@ -90,15 +90,16 @@ wals_worder_nPN <- wals_value %>%
 ```
 
 
+## Analysis
 
-
+First off, let's see the distribution of Pama-Nyungan languages compared to Non-Pama Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing dataframe in order to make the legend of the final map more easily readable. Using this new dataframe, I plot the locations of the languages onto the map.
 
 ```{r AUS_map}
 
 map_AUS <- get_stadiamap(bbox = c(left = 113, 
                                   bottom = -44,
                                   right = 154,
-                                  top = -9), #here the map boundaries given by ChatGPT earlier came in handy again
+                                  top = -9), 
                          zoom = 3,
                          maptype = "stamen_toner_lite",
                          color = "color")
@@ -123,6 +124,17 @@ map_AUS_family <- ggmap(map_AUS) +
   labs(color = "Families")
 map_AUS_family
 
+
+
+```
+This map clearly illustrates the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. The latter is, with a few exceptions, visibly confined to the northernmost part of Australia, whereas the Pama-Nyungan languages are spread all throughout the continent.
+
+### Word Order
+
+The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. 
+
+
+```{r}
 
 
 #a different map that shows the dominant word order of Australian languages
@@ -153,7 +165,6 @@ map_nPN_worder <- ggmap(map_AUS) +
         legend.title = element_text(size = 12)) +
   labs(color = "Dominant Word Order")
 map_nPN_worder
-
 
 ```
 
@@ -211,4 +222,6 @@ Wickham, H et al. (2019). Welcome to the tidyverse. Journal of Open Source Softw
 Zuckermann, G. et al. (2021) LARA in the Service of Revivalistics and Documentary Linguistics: Community Engagement and Endangered Languages. Proceedings of the Workshop on Computational Methods for Endangered Languages (1), 13-23.  
 
 
+
+***
 Everything related to this project can be found in [$\color{blue}{\text{this GitHub repository}}$](https://github.com/BendixY/LDAR-FP-BW).
