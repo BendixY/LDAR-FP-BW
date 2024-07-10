@@ -13,8 +13,6 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Everything related to this project can be found in [this GitHub repository](https://github.com/BendixY/LDAR-FP-BW).
-
 ```{r packages, include=FALSE}
 
 library(tidyverse)
@@ -34,15 +32,17 @@ One of the main actors in describing Australian languages is Robert M. W. Dixon.
 
 In more recent publications, like the paper by Bouckaert et al. (2018), computer-assisted methods have gained ground. This paper specifically deals with the genealogy of Pama-Nyungan languages. Using their data consisting of basic vocabulary of 306 different Pama-Nyungan languages, they created a phylogenetic tree that shows the diversification of the Pama-Nyungan language family. Additionally, the same data was used to find a likely homeland of the family, which they postulated to be in the Gulf Plains region.
 
-In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categories like word order or phoneme inventory. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category.
+In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categorical features such as word order, use of reduplication and more. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category. Furthermore, for certain features, I will focus solely on the Pama-Nyungan languages. 
 
 
 ## Data
-The data used for this project originates from two cldf datasets, one being the WALS data, the other one being the phoible data. The WALS data was used predominately. 
+The data used for this project originates from the cldf data by WALS. I initially intended to use the phoible cldf data as well, but ended up deciding against it as it did not add an appropriate amount of value to the final product.
 
-The data wrangling for this project was relatively simple, since the data sets provided by WALS and phoible respectively are quite clean already. The biggest challenge posed was figuring out how to load cldf datasets into R and how to manipulate them appropriately. I struggled with that part for a while as it also had me refresh my memory on how the different join functions would behave.
-I created a seperate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required dataframes. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. 
-```{r data_wrangling, include=FALSE}
+The data wrangling for this project was relatively extensive. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate dataframes eficiently and how to structure the creation of new dataframes from the given sets without creating too much redundancy.
+I created a seperate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required dataframes. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. The seperate scripts can be found in the corresponding GitHub repository, a link to which can be found at the end of this document.
+
+I started out by loading in the cldf using the rcldf package. From this a wide dataframe was created using the Value Table and filtering for Australian languages only.
+```{r data_wrangling1, include=TRUE}
 
 ##loading in data from phoible and WALS and limiting them to languages spoken in Australia
 #Let's start with WALS
@@ -58,32 +58,14 @@ wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>%
 glimpse(wals_value)
 
 
-#This following one is a simple dataframe that shows the different Australian languages. Only used once to create a map.
-wals_lang <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
-  filter( #Latitude >= -44 & Latitude <= -11 & 
-           #Longitude >= 112 & Longitude <= 154 &
-           Macroarea == "Australia",
-           )
-#boundaries were determined with the help of ChatGPT 4.o but ended up not being helpful enough. i left the code in in case i might need it at another time
-glimpse(wals_lang)
 
+```
 
-#Now we do the same with the data by phoible
-phoible_cldf <- cldf(here("data/phoible/cldf-datasets/cldf"))
-summary(phoible_cldf)
+Next up was creating seperate dataframes that specifically only included either Pama-Nyungan or Non-Pama-Nyungan languages. Additionaly, the relevent column was renamed to be more descriptive and therefore easier to work with.
 
-phoible_value <- as.cldf.wide(phoible_cldf, "ValueTable") 
-phoible_Language <- as.cldf.wide(phoible_cldf, "LanguageTable") %>% 
-  filter(Macroarea == "Australia")
-
-#We join these two to create a single tibble containing more information
-phoible_joined <- phoible_Language %>% 
-  left_join(phoible_value, by = c("ID" = "Language_ID"))
-
-
-
+```{r data_wrangling2}
 ##Word Order Data Wrangling
-#creates two seperate df, for PN and nPN respectively. Also renames relevant columns to be more descriptive.
+#creates two seperate df, for PN and nPN respectively.
 
 wals_worder_PN <- wals_value %>% 
   filter( Chapter_ID == "81" &
@@ -96,6 +78,20 @@ wals_worder_nPN <- wals_value %>%
   rename("WordOrder" = "Name.CodeTable")
 
 ```
+
+
+```{r data_wrangling3}
+
+```
+
+
+```{r data_wrangling4}
+
+```
+
+
+
+
 
 ```{r AUS_map}
 
@@ -214,3 +210,5 @@ Schmidt, W. (1919). Die Gliederung der australischen Sprachen: geographische, bi
 Wickham, H et al. (2019). Welcome to the tidyverse. Journal of Open Source Software,  4 (43), 1686. doi:10.21105/joss.01686 https://doi.org/10.21105/joss.01686  
 Zuckermann, G. et al. (2021) LARA in the Service of Revivalistics and Documentary Linguistics: Community Engagement and Endangered Languages. Proceedings of the Workshop on Computational Methods for Endangered Languages (1), 13-23.  
 
+
+Everything related to this project can be found in [$\color{blue}{\text{this GitHub repository}}$](https://github.com/BendixY/LDAR-FP-BW).
