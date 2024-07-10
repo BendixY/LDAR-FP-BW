@@ -53,11 +53,14 @@ map_PN_worder <- ggmap(map_AUS) +
              aes( x = Longitude,
                   y = Latitude,
                   color = WordOrder),
-             show.legend = T) +
+             show.legend = T,
+             size = 4) +
   theme_map() +
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Dominant Word Order")
+  labs(color = "Dominant Word Order") +
+  ggtitle("Word Order in Pama-Nyungan languages")
+
 map_PN_worder
 
 ggsave(here("output/map_PN_worder.png"),
@@ -73,11 +76,13 @@ map_nPN_worder <- ggmap(map_AUS) +
              aes( x = Longitude,
                   y = Latitude,
                   color = WordOrder),
-             show.legend = T) +
+             show.legend = T,
+             size = 4) +
   theme_map() +
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Dominant Word Order")
+  labs(color = "Dominant Word Order") +
+  ggtitle("Word Order in Non-Pama-Nyungan languages")
 map_nPN_worder
 
 ggsave(here("output/map_nPN_worder.png"),

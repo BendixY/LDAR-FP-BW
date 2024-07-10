@@ -30,12 +30,30 @@ glimpse(wals_value)
 wals_worder_PN <- wals_value %>% 
   filter( Chapter_ID == "81" &
             Family == "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable")
+  rename("WordOrder" = "Name.CodeTable") %>% 
+  mutate(WordOrder = factor(WordOrder,
+                               levels = c("SOV",
+                                          "SVO",
+                                          "VOS",
+                                          "OSV",
+                                          "No dominant order")))
 
 wals_worder_nPN <- wals_value %>% 
   filter( Chapter_ID == "81" &
             Family != "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable")
+  rename("WordOrder" = "Name.CodeTable") %>%  
+  mutate(WordOrder = factor(WordOrder,
+                            levels = c("SOV",
+                                       "SVO",
+                                       "SVO or VOS",
+                                       "OSV",
+                                       "No dominant order"))) %>% 
+  mutate(WordOrder = case_when( #this bit was added as three languages didn't have entries in the new WordOrder Column. Thankfully the necessary information was in the Column next to it, so we add it back in
+    Language_ID.ValueTable == "ung" ~ "OVS",
+    Language_ID.ValueTable == "myi" ~ "OVS",
+    Language_ID.ValueTable == "grr" ~ "SVO or VOS",  
+    TRUE ~ WordOrder))
+glimpse(wals_worder_nPN)
 
 ##Reduplication
 ###essentially the same process as above, but for a different Feature

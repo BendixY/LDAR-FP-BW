@@ -61,7 +61,7 @@ glimpse(wals_value)
 
 ```
 
-Next up was creating seperate dataframes that specifically only included either Pama-Nyungan or Non-Pama-Nyungan languages. Additionaly, the relevent column was renamed to be more descriptive and therefore easier to work with.
+Next up was creating seperate dataframes that specifically only included either Pama-Nyungan or Non-Pama-Nyungan languages. Additionaly, the relevent column was renamed to be more descriptive and therefore easier to work with, then mutated into factors, so the different entries could be clearly ordered. In the case of the Non-Pama-Nyungan languages, another step was taken where we add in missing data into the relevant column, as it was entered as NA. Another column next to it had the missing data, so I manually added the entries back in.
 
 ```{r data_wrangling2}
 ##Word Order Data Wrangling
@@ -70,12 +70,30 @@ Next up was creating seperate dataframes that specifically only included either 
 wals_worder_PN <- wals_value %>% 
   filter( Chapter_ID == "81" &
             Family == "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable")
+  rename("WordOrder" = "Name.CodeTable") %>% 
+  mutate(WordOrder = factor(WordOrder,
+                               levels = c("SOV",
+                                          "SVO",
+                                          "VOS",
+                                          "OSV",
+                                          "No dominant order")))
 
 wals_worder_nPN <- wals_value %>% 
   filter( Chapter_ID == "81" &
             Family != "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable")
+  rename("WordOrder" = "Name.CodeTable") %>%  
+  mutate(WordOrder = factor(WordOrder,
+                            levels = c("SOV",
+                                       "SVO",
+                                       "SVO or VOS",
+                                       "OSV",
+                                       "No dominant order"))) %>% 
+  mutate(WordOrder = case_when( #this bit was added as three languages didn't have entries in the new WordOrder Column. Thankfully the necessary information was in the Column next to it, so we add it back in
+    Language_ID.ValueTable == "ung" ~ "OVS",
+    Language_ID.ValueTable == "myi" ~ "OVS",
+    Language_ID.ValueTable == "grr" ~ "SVO or VOS",  
+    TRUE ~ WordOrder))
+glimpse(wals_worder_nPN)
 
 ```
 
@@ -131,11 +149,9 @@ This map clearly illustrates the distribution of Pama-Nyungan languages compared
 
 ### Word Order
 
-The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. 
-
+The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. I do not intend on making an exception in this matter either. To gain insight on the matter for the context of the Australian languages, I will be creating seperate maps for both Pama-Nyungan and Non-Pama-Nyungan, as well as seperate bar plots to explore the frequency of each within the respective categories.
 
 ```{r}
-
 
 #a different map that shows the dominant word order of Australian languages
 #first we need to filter for data that entails the Word order. This is chapter 81 of WALS. we further seperate them by PN and nPN
@@ -146,11 +162,13 @@ map_PN_worder <- ggmap(map_AUS) +
              aes( x = Longitude,
                   y = Latitude,
                   color = WordOrder),
-             show.legend = T) +
+             show.legend = T,
+             size = 3) +
   theme_map() +
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Dominant Word Order")
+  labs(color = "Dominant Word Order") +
+  ggtitle("Word Order in Pama-Nyungan languages")
 map_PN_worder
 
 ##nPN
@@ -159,19 +177,22 @@ map_nPN_worder <- ggmap(map_AUS) +
              aes( x = Longitude,
                   y = Latitude,
                   color = WordOrder),
-             show.legend = T) +
+             show.legend = T,
+             size = 3) +
   theme_map() +
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Dominant Word Order")
+  labs(color = "Dominant Word Order") +
+  ggtitle("Word Order in Non-Pama-Nyungan languages")
 map_nPN_worder
 
+#Note: the size of the dots was reduced compared to the code in Maps.R, so as to make the individual dots more clearly distinguishable after the pdf is knit.
+
 ```
+The maps paint an unlcear picture. There is little insight to be gained from these maps alone. Maybe one could argue that there's a slight concentration of Pama-Nyungan languages that prefer SOV word order within the outback of Australia. Though the northernmost part of Queensland also shows such a trend and it is hard to say if either is truly meaningful. Looking at the map regarding the Non-Pama-Nyungan languages, not much more can be said. There is an apparent general trend to not having a clear dominant order though. Let's plot the frequencies of the various word orders for the two language categories.
 
 
 ```{r plots}
-
-#PLOTS
 
 
 ##Word Order Plots
