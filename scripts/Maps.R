@@ -17,7 +17,7 @@ ggmap(map_AUS)
 
 #This map will show the distribution of PN and nPN languages. While reductionist, I want to make it easier to read, so I mutate all nPN languages to simply "Non-Pama-Nyungan"
 
-wals_nPN <- wals_aus %>% 
+wals_nPN <- wals_value %>% 
   mutate(Family = if_else(Family == "Pama-Nyungan", "Pama-Nyungan", "Non-Pama-Nyungan"))
 
 
@@ -60,6 +60,12 @@ map_PN_worder <- ggmap(map_AUS) +
   labs(color = "Dominant Word Order")
 map_PN_worder
 
+ggsave(here("output/map_PN_worder.png"),
+       map_PN_worder,
+       width = 30,
+       height = 30,
+       units = "cm",
+       dpi = 600)
 
 ##nPN
 map_nPN_worder <- ggmap(map_AUS) +
@@ -74,4 +80,10 @@ map_nPN_worder <- ggmap(map_AUS) +
   labs(color = "Dominant Word Order")
 map_nPN_worder
 
+ggsave(here("output/map_nPN_worder.png"),
+       map_nPN_worder,
+       width = 30,
+       height = 30,
+       units = "cm",
+       dpi = 600)
 

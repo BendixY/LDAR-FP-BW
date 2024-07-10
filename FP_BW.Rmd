@@ -38,39 +38,81 @@ In this paper I will be looking at the geographical distribution of the Australi
 
 
 ## Data
-The data used for this project originates from two cldf datasets, one being the WALS data, the other one being the phoible data. In certain places I have 
+The data used for this project originates from two cldf datasets, one being the WALS data, the other one being the phoible data. The WALS data was used predominately. 
 
 The data wrangling for this project was relatively simple, since the data sets provided by WALS and phoible respectively are quite clean already. The biggest challenge posed was figuring out how to load cldf datasets into R and how to manipulate them appropriately. I struggled with that part for a while as it also had me refresh my memory on how the different join functions would behave.
-I created a few different subsets of data which are used for specific tasks.
+I created a seperate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required dataframes. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. 
 ```{r data_wrangling, include=FALSE}
-#loading in data from phoible and WALS and limiting them to languages spoken in Australia
 
-wals_aus <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
-  filter( #Latitude >= -44 & Latitude <= -10 & 
+##loading in data from phoible and WALS and limiting them to languages spoken in Australia
+#Let's start with WALS
+
+wals_cldf <- cldf(here("data/WALS/cldf"))
+#this loads the cldf data, but is not yet manipulable. Do to this, we need to get it into a dataframe or tibble format
+summary(wals_cldf)
+
+
+#This creates a tibble that will be manipulated further at different points.
+wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>% 
+  filter(Macroarea == "Australia")
+glimpse(wals_value)
+
+
+#This following one is a simple dataframe that shows the different Australian languages. Only used once to create a map.
+wals_lang <- read_csv(here("data/WALS/cldf/languages.csv")) %>% 
+  filter( #Latitude >= -44 & Latitude <= -11 & 
            #Longitude >= 112 & Longitude <= 154 &
-           Macroarea == "Australia")
+           Macroarea == "Australia",
+           )
 #boundaries were determined with the help of ChatGPT 4.o but ended up not being helpful enough. i left the code in in case i might need it at another time
+glimpse(wals_lang)
 
 
-#The following mutation is used for a map that is only supposed to show PN and nPN languges. While reductionist, I want to make it easier to read, so I mutate all nPN languages to simply "Non-Pama-Nyungan"
+#Now we do the same with the data by phoible
+phoible_cldf <- cldf(here("data/phoible/cldf-datasets/cldf"))
+summary(phoible_cldf)
 
-wals_nPN <- wals_aus %>% 
-  mutate(Family = if_else(Family == "Pama-Nyungan", "Pama-Nyungan", "Non-Pama-Nyungan"))
-glimpse(wals_aus)
+phoible_value <- as.cldf.wide(phoible_cldf, "ValueTable") 
+phoible_Language <- as.cldf.wide(phoible_cldf, "LanguageTable") %>% 
+  filter(Macroarea == "Australia")
+
+#We join these two to create a single tibble containing more information
+phoible_joined <- phoible_Language %>% 
+  left_join(phoible_value, by = c("ID" = "Language_ID"))
+
+
+
+##Word Order Data Wrangling
+#creates two seperate df, for PN and nPN respectively. Also renames relevant columns to be more descriptive.
+
+wals_worder_PN <- wals_value %>% 
+  filter( Chapter_ID == "81" &
+            Family == "Pama-Nyungan") %>% 
+  rename("WordOrder" = "Name.CodeTable")
+
+wals_worder_nPN <- wals_value %>% 
+  filter( Chapter_ID == "81" &
+            Family != "Pama-Nyungan") %>% 
+  rename("WordOrder" = "Name.CodeTable")
+
 ```
 
 ```{r AUS_map}
 
-map_AUS <- get_stadiamap(bbox = c(left = 112, 
+map_AUS <- get_stadiamap(bbox = c(left = 113, 
                                   bottom = -44,
                                   right = 154,
-                                  top = -10), #here the map boundaries given by ChatGPT earlier came in handy again
-                         zoom = 5,
+                                  top = -9), #here the map boundaries given by ChatGPT earlier came in handy again
+                         zoom = 3,
                          maptype = "stamen_toner_lite",
                          color = "color")
 ggmap(map_AUS)
 
+#This map will show the distribution of PN and nPN languages. While reductionist, I want to make it easier to read, so I mutate all nPN languages to simply "Non-Pama-Nyungan"
 
+
+wals_nPN <- wals_value %>% 
+  mutate(Family = if_else(Family == "Pama-Nyungan", "Pama-Nyungan", "Non-Pama-Nyungan"))
 
 map_AUS_family <- ggmap(map_AUS) +
   geom_point(data = wals_nPN,
@@ -84,6 +126,74 @@ map_AUS_family <- ggmap(map_AUS) +
         legend.title = element_text(size = 12)) +
   labs(color = "Families")
 map_AUS_family
+
+
+
+#a different map that shows the dominant word order of Australian languages
+#first we need to filter for data that entails the Word order. This is chapter 81 of WALS. we further seperate them by PN and nPN
+
+##PN
+map_PN_worder <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_PN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = WordOrder),
+             show.legend = T) +
+  theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Dominant Word Order")
+map_PN_worder
+
+##nPN
+map_nPN_worder <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_nPN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = WordOrder),
+             show.legend = T) +
+  theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Dominant Word Order")
+map_nPN_worder
+
+
+```
+
+
+```{r plots}
+
+#PLOTS
+
+
+##Word Order Plots
+
+###Word Order PN
+histo_PN_worder <- ggplot(data = wals_worder_PN,
+                               aes(x = WordOrder,
+                                   fill = WordOrder)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Word Order") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+histo_PN_worder #getting a preview
+
+
+###Word Order nPN
+
+histo_nPN_worder <- ggplot(data = wals_worder_nPN,
+                               aes(x = WordOrder,
+                                   fill = WordOrder)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Word Order") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Frequency of Word Orders in the Australian Languages") # adding a descriptive title
+histo_nPN_worder #getting a preview
 
 
 ```

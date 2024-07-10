@@ -19,6 +19,7 @@ summary(wals_cldf)
 #This creates a tibble that will be manipulated further at different points.
 wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>% 
   filter(Macroarea == "Australia")
+glimpse(wals_value)
 
 
 #This following one is a simple dataframe that shows the different Australian languages. Only used once to create a map.
