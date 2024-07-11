@@ -1,6 +1,6 @@
 ---
 title: "Linguistic Data Analysis - Final Project"
-author: "Benedict Wuethrich"
+author: "Benedict Wüthrich 16-114-456"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
