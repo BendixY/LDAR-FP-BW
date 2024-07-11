@@ -74,3 +74,18 @@ ggsave(here("output/histo_nPN_worder.png"),
        height = 20,
        units = "cm",
        dpi = 600)
+
+
+## Consonant Inventory plots
+#PN
+histo_PN_cons <- ggplot(data = wals_cons_PN,
+                          aes(x = ConsonantInventories,
+                              fill = ConsonantInventories)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Size of Consonant Inventory") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Sizes of Consonant Inventories Pama-Nyunga Languages") # adding a descriptive title
+histo_PN_cons #getting a preview
+

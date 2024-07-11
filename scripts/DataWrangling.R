@@ -41,7 +41,7 @@ wals_worder_PN <- wals_value %>%
 wals_worder_nPN <- wals_value %>% 
   filter( Chapter_ID == "81" &
             Family != "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable") %>%  
+  rename("WordOrder" = "Name.CodeTable") %>% 
   mutate(WordOrder = factor(WordOrder,
                             levels = c("SOV",
                                        "SVO",
@@ -63,7 +63,13 @@ glimpse(wals_worder_nPN)
 wals_cons_PN <- wals_value %>% 
   filter( Chapter_ID == "1" &
             Family == "Pama-Nyungan") %>% 
-  rename("ConsonantInventories" = "Name.CodeTable")
+  rename("ConsonantInventories" = "Name.CodeTable") %>% 
+  mutate(ConsonantInventories = factor(ConsonantInventories,
+                                      levels = c("Large",
+                                                 "Moderately large",
+                                                 "Average",
+                                                 "Moderately small",
+                                                 "Small")))
 
 #separating by Vowel Quality Inventories
 wals_vowels_PN <- wals_value %>% 
@@ -88,7 +94,11 @@ wals_ratio_PN <- wals_value %>%
 wals_cons_nPN <- wals_value %>% 
   filter( Chapter_ID == "1" &
             Family != "Pama-Nyungan") %>% 
-  rename("ConsonantInventories" = "Name.CodeTable")
+  rename("ConsonantInventories" = "Name.CodeTable") %>% 
+  mutate(ConsonantInventories = factor(ConsonantInventories,
+                                       levels = c("Average",
+                                                  "Moderately small",
+                                                  "Small")))
 
 #separating by Vowel Quality Inventories
 wals_vowels_nPN <- wals_value %>% 

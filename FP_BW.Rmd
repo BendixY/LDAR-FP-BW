@@ -294,8 +294,10 @@ histogram_PNGenus_worder #getting a preview
 ```
 One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geograhical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantely without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
 
-### Others
+### Phoneme Inventory
 
+Next up, I will be looking at the phoneme inventories of the two language families. As the data by WALS does not give explicit data on that but rather simply ranges of inventory sizes, I will try my best to gain some meaningful insight from this approach.  
+Let's start off by comparing the consonant inventories of Pama-Nyungan and Non-Pama-Nyungan.
 
 ## Discussion
 
