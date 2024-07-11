@@ -85,7 +85,7 @@ wals_ratio_PN <- wals_value %>%
   rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
   mutate(ConsonantVowelRatio = factor(ConsonantVowelRatio,
                             levels = c("High",
-                                       "Mderately High",
+                                       "Moderately high",
                                        "Average",
                                        "Moderately low")))
 
@@ -113,6 +113,6 @@ wals_ratio_nPN <- wals_value %>%
             Family != "Pama-Nyungan") %>% 
   rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
   mutate(ConsonantVowelRatio = factor(ConsonantVowelRatio,
-                                      levels = c("Mderately High",
+                                      levels = c("Moderately high",
                                                  "Average",
                                                  "Moderately low")))
