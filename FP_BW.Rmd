@@ -55,9 +55,6 @@ summary(wals_cldf)
 #This creates a tibble that will be manipulated further at different points.
 wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>% 
   filter(Macroarea == "Australia")
-glimpse(wals_value)
-
-
 
 ```
 
@@ -93,7 +90,6 @@ wals_worder_nPN <- wals_value %>%
     Language_ID.ValueTable == "myi" ~ "OVS",
     Language_ID.ValueTable == "grr" ~ "No dominant order",  
     TRUE ~ WordOrder))
-glimpse(wals_worder_nPN)
 
 ```
 
@@ -226,7 +222,7 @@ histo_nPN_worder #getting a preview
 
 ```
 With this additional information, we can now more clearly see that the Pama-Nyungan languages have a very clear tendency of having a SOV word order, as almost half of all languages in the dataset have this as their dominant word order. The trend of starting off a sentence with the Subject continues, with six more languages having a SVO word order. Having no dominant word order is also quite common in this dataset, with a tital of 18 languages fitting that profile. Only a small minority, a total of three languages, have a word order that does not fit those three major categories.  
-The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majoriy of those who do have one, will have one that starts their word order with the subject of the sentence. Opposing the Pama-Nyungan languages and their tendencies is the fact that here the amount of languages with a SOV word order outnumber those with a SVO order.
+The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majoriy of those who do have one, will have one that starts their word order with the subject of the sentence. 
 
 Circling back to the Pama-Nyungan languages, let's look at the Word Order distribution if we separate them by Genus. This might give us additional insight into the regional distribution of word order in Australia.
 
@@ -245,6 +241,7 @@ histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
 histogram_PNGenus_worder #getting a preview
 
 ```
+One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geograhical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite.  The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. 
 
 
 ## Discussion
@@ -258,7 +255,7 @@ Data represents only around 15% of PN languages
 ## Bibliography
 
 Bouckaert, Remco R., Claire Bowern & Quentin D. Atkinson (2018). The origin and expansion of Pama–Nyungan languages across Australia. Nature Ecology & Evolution (2), 741–749.  
-Bowern, Claire / Koch, Harold (Hrsg.) (2004): Australian Languages. Classification and the comparative method. Amsterdam / Philadelphia: John Benjamins.  
+Bowern, Claire / Koch, Harold (Publ.) (2004): Australian Languages. Classification and the comparative method. Amsterdam / Philadelphia: John Benjamins.  
 Dixon, R.M.W. (1980): The Languages of Australia. Cambridge: Cambridge University Press.  
 Dixon, R.M.W. (2004): Australian Languages. Their Nature and Development. Cambridge: Cambridge University Press.  
 Greenhill, Simon (2024). rcldf: rcldf - Read Linguistic Data In The Cross Linguistic Data Format (CLDF)_. R package version 1.2.0, commit 3979a89dbe4db653873caca62212fc07ebb966e9, https://github.com/SimonGreenhill/rcldf  
@@ -267,6 +264,7 @@ Matthew S. Dryer. (2013) Order of Subject, Object and Verb. In: Dryer, Matthew S
 Moran, Steven & McCloy, Daniel (eds.) 2019. PHOIBLE. Jena: Max Planck Institute for the Science of Human History. (Available online at https://phoible.org)  
 O’Grady, G. N. (1998). Toward a Proto-Pama-Nyungan Stem List, Part I: Sets J1-J25. Oceanic Linguistics, 37(2), 209–233.  
 Schmidt, W. (1919). Die Gliederung der australischen Sprachen: geographische, bibliographische, linguistische Grundzüge der Erforschung der australischen Sprachen. Mechitharisten-Buchdruckerei.  
+Simon Garnier, Noam Ross, Robert Rudis, Antônio P. Camargo, Marco Sciaini, and Cédric Scherer (2024). viridis(Lite) - Colorblind-Friendly Color Maps for R. viridis package version 0.6.5.  
 Wickham, H et al. (2019). Welcome to the tidyverse. Journal of Open Source Software,  4 (43), 1686. doi:10.21105/joss.01686 https://doi.org/10.21105/joss.01686  
 Zuckermann, G. et al. (2021) LARA in the Service of Revivalistics and Documentary Linguistics: Community Engagement and Endangered Languages. Proceedings of the Workshop on Computational Methods for Endangered Languages (1), 13-23.  
 
