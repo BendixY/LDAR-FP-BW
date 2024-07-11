@@ -55,16 +55,54 @@ wals_worder_nPN <- wals_value %>%
     TRUE ~ WordOrder))
 glimpse(wals_worder_nPN)
 
-##Reduplication
-###essentially the same process as above, but for a different Feature
+## Phoneme Inventory
+###essentially the same process as above, but for a different Features
 
-wals_redupli_PN <- wals_value %>% 
-  filter( Chapter_ID == "27" &
+###PN
+#separating by ConsonantInventories
+wals_cons_PN <- wals_value %>% 
+  filter( Chapter_ID == "1" &
             Family == "Pama-Nyungan") %>% 
-  rename("Reduplication" = "Name.CodeTable")
+  rename("ConsonantInventories" = "Name.CodeTable")
+
+#separating by Vowel Quality Inventories
+wals_vowels_PN <- wals_value %>% 
+  filter( Chapter_ID == "2" &
+            Family == "Pama-Nyungan") %>% 
+  rename("VowelQualityInventories" = "Name.CodeTable")
 
 
-wals_redupli_nPN <- wals_value %>% 
-  filter( Chapter_ID == "27" &
+#separating for Consonant/Vowel Ratio and ordering the levels
+wals_ratio_PN <- wals_value %>% 
+  filter( Chapter_ID == "3" &
+            Family == "Pama-Nyungan") %>% 
+  rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
+  mutate(ConsonantVowelRatio = factor(ConsonantVowelRatio,
+                            levels = c("High",
+                                       "Mderately High",
+                                       "Average",
+                                       "Moderately low")))
+
+###nPN
+#separating by ConsonantInventories
+wals_cons_nPN <- wals_value %>% 
+  filter( Chapter_ID == "1" &
             Family != "Pama-Nyungan") %>% 
-  rename("Reduplication" = "Name.CodeTable")
+  rename("ConsonantInventories" = "Name.CodeTable")
+
+#separating by Vowel Quality Inventories
+wals_vowels_nPN <- wals_value %>% 
+  filter( Chapter_ID == "2" &
+            Family != "Pama-Nyungan") %>% 
+  rename("VowelQualityInventories" = "Name.CodeTable")
+
+
+#separating for Consonant/Vowel Ratio and ordering the levels
+wals_ratio_nPN <- wals_value %>% 
+  filter( Chapter_ID == "3" &
+            Family != "Pama-Nyungan") %>% 
+  rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
+  mutate(ConsonantVowelRatio = factor(ConsonantVowelRatio,
+                                      levels = c("Mderately High",
+                                                 "Average",
+                                                 "Moderately low")))
