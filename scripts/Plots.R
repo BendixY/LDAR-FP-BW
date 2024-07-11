@@ -33,6 +33,27 @@ ggsave(here("output/histo_PN_worder.png"),
        dpi = 600)
 
 
+#Worder Plot for PM, fill = genus
+histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
+                              aes(x = WordOrder,
+                                  fill = Genus)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x = "Word Order") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind() +
+  ggtitle("Frequency of Word Orders in Pama-Nyungan Subfamilies") # adding a descriptive title
+histogram_PNGenus_worder #getting a preview
+
+##saving it
+ggsave(here("output/histogram_PNGenus_worder.png"),
+       histogram_PNGenus_worder,
+       width = 30,
+       height = 20,
+       units = "cm",
+       dpi = 600)
+
+
 ###Word Order nPN
 
 histo_nPN_worder <- ggplot(data = wals_worder_nPN,

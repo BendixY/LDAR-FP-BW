@@ -228,10 +228,30 @@ histo_nPN_worder #getting a preview
 With this additional information, we can now more clearly see that the Pama-Nyungan languages have a very clear tendency of having a SOV word order, as almost half of all languages in the dataset have this as their dominant word order. The trend of starting off a sentence with the Subject continues, with six more languages having a SVO word order. Having no dominant word order is also quite common in this dataset, with a tital of 18 languages fitting that profile. Only a small minority, a total of three languages, have a word order that does not fit those three major categories.  
 The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majoriy of those who do have one, will have one that starts their word order with the subject of the sentence. Opposing the Pama-Nyungan languages and their tendencies is the fact that here the amount of languages with a SOV word order outnumber those with a SVO order.
 
+Circling back to the Pama-Nyungan languages, let's look at the Word Order distribution if we separate them by Genus. This might give us additional insight into the regional distribution of word order in Australia.
+
+```{r genus worder plot}
+
+#Worder Plot for PM, fill = genus
+histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
+                              aes(x = WordOrder,
+                                  fill = Genus)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x = "Word Order") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind() +
+  ggtitle("Frequency of Word Orders in Pama-Nyungan Subfamilies") # adding a descriptive title
+histogram_PNGenus_worder #getting a preview
+
+```
+
 
 ## Discussion
 
-
+Accuracy of genus data. simply regional or based?
+Pooling nPN never a good idea
+Data represents only around 15% of PN languages
 
 
 \newpage
