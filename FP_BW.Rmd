@@ -32,7 +32,7 @@ One of the main actors in describing Australian languages is Robert M. W. Dixon.
 
 In more recent publications, like the paper by Bouckaert et al. (2018), computer-assisted methods have gained ground. This paper specifically deals with the genealogy of Pama-Nyungan languages. Using their data consisting of basic vocabulary of 306 different Pama-Nyungan languages, they created a phylogenetic tree that shows the diversification of the Pama-Nyungan language family. Additionally, the same data was used to find a likely homeland of the family, which they postulated to be in the Gulf Plains region.
 
-In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categorical features such as word order, use of reduplication and more. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category. Furthermore, for certain features, I will focus solely on the Pama-Nyungan languages. 
+In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categorical features such as word order and phonemic inventory. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category. The goal is to gain an understanding of how these features are represented in the two "families" and if any conclusion can be drawn regarding contact of them. 
 
 
 ## Data
@@ -160,11 +160,6 @@ wals_ratio_nPN <- wals_value %>%
 ```
 
 
-```{r data_wrangling4}
-
-```
-
-
 ## Analysis
 
 First off, let's see the distribution of Pama-Nyungan languages compared to Non-Pama Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing dataframe in order to make the legend of the final map more easily readable. Using this new dataframe, I plot the locations of the languages onto the map.
@@ -196,7 +191,8 @@ map_AUS_family <- ggmap(map_AUS) +
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Families")
+  labs(color = "Families")+
+  ggtitle("Distribution of Languages in Australia")
 map_AUS_family
 
 
@@ -309,12 +305,110 @@ One thing that becomes apparent immediately when considering this plot is the fa
 Next up, I will be looking at the phoneme inventories of the two language families. As the data by WALS does not give explicit data on that but rather simply ranges of inventory sizes, I will try my best to gain some meaningful insight from this approach.  
 Let's start off by comparing the consonant inventories of Pama-Nyungan and Non-Pama-Nyungan.
 
+```{r pn cons and vow}
+
+#Consonant Inventory
+histo_PN_cons <- ggplot(data = wals_cons_PN,
+                          aes(x = ConsonantInventories,
+                              fill = ConsonantInventories)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Size of Consonant Inventory") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Sizes of Consonant Inventories in Pama-Nyunga Languages") # adding a descriptive title
+histo_PN_cons #getting a preview
+
+#Vowel Quality Inventory
+histo_PN_vowels <- ggplot(data = wals_vowels_PN,
+                        aes(x = VowelQualityInventories,
+                            fill = VowelQualityInventories)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Size of Vowel Quality Inventory") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Sizes of Vowel Quality Inventories in Pama-Nyunga Languages") # adding a descriptive title
+histo_PN_vowels #getting a preview
+
+```
+These bar plots clearly show that Pama-Nyungan languages have a strong tendency towards both small consonant as well as small vowel inventories. Let's plot the same for Non-Pama-Nyungan and see if the trend continues.
+
+
+```{r npn cons and vowel}
+
+##nPN
+#Consonant Inventory
+histo_nPN_cons <- ggplot(data = wals_cons_nPN,
+                        aes(x = ConsonantInventories,
+                            fill = ConsonantInventories)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Size of Consonant Inventory") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Sizes of Consonant Inventories in Non-Pama-Nyungan Languages") # adding a descriptive title
+histo_nPN_cons #getting a preview
+
+#Vowel Quality Inventory
+histo_nPN_vowels <- ggplot(data = wals_vowels_nPN,
+                          aes(x = VowelQualityInventories,
+                              fill = VowelQualityInventories)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Size of Vowel Quality Inventory") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Sizes of Vowel Quality Inventories in Non-Pama-Nyungan Languages") # adding a descriptive title
+histo_nPN_vowels #getting a preview
+
+
+```
+
+It is apparent that the Non-Pama-Nyungan languages also tend towards rather small consonant inventories, even more so than the Pama-Nyungan languages, as here we do not find any languages with a large or moderately large consonant inventory at all. But the Non-Pama-Nyungan languages are starkly contrasting thei Pama-Nyungan couterparts when it comes to vowel inventories. There are a lot more Non-Pama-Nyungan languages that have a vowel quality inventory larger than 4, though the majority is still slightly tending towards a smaller inventory of 4 or less.  
+Lastly, let's compare the Consonant to Vowel Ratio of Pama-Nyungan and Non-Pama-Nyungan languages.
+
+```{r cons to vowel ratios}
+
+#Consonant/Vowel L + Ratio
+#PN
+histo_PN_ratio <- ggplot(data = wals_ratio_PN,
+                          aes(x = ConsonantVowelRatio,
+                              fill = ConsonantVowelRatio)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Consonant to Vowel Ratio") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Ratios of Consonants to Vowels in Pama-Nyunga Languages") # adding a descriptive title
+histo_PN_ratio #getting a preview
+
+#nPN
+
+histo_nPN_ratio <- ggplot(data = wals_ratio_nPN,
+                         aes(x = ConsonantVowelRatio,
+                             fill = ConsonantVowelRatio)) +
+  geom_histogram(stat = "count") + # defining the type of plot
+  labs(y = "Number of Languages",
+       x= "Consonant to Vowel Ratio") + # renaming the axes
+  theme_bw() + # adjusting the theme
+  scale_fill_colorblind(guide = FALSE) +
+  ggtitle("Ratios of Consonants to Vowels in Non-Pama-Nyungan Languages") # adding a descriptive title
+histo_nPN_ratio #getting a preview
+
+```
+Unsurprisingly, the Pama-Nyungan languages show a generally higher ratio of consonants to vowels. This is driven bth by their generally slightly bigger consonant inventories and consistently smaller vowel quality inventories respectively. It is worth noting that there is still one Pama-Nyungan language that has a moderately low ratio, which is unexpected given the data.  The Non-Pama-Nyungan languages generally tend towards having a moderately high or average consonant to vowel ratio. Here we again have a single outlier that shows a moderately low ratio.  
+It is worth noting that the datapoints for all of these sets are significantly smaller than the ones regarding word order.
+
 ## Discussion
 
-Accuracy of genus data. simply regional or based?
-Pooling nPN never a good idea
-Data represents only around 15% of PN languages for word order, less than 5% for phoneme inventory
+A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 datapoints, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 datapoints each, so less than 5% of total Pama-Nyungan languages.  While a clear number of Non-Pama-Nyungan languages was not found in the literature considered, it is likely that the discrepancy is similar, though not as significantly.  
 
+Another important aspect to be aware of is the handwaiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
+
+Finally, I wonder about the accuracy of the genus data that I used in the bar plot where I visually separated the Word Order occurences by genera of Pama-Nyungan languages. It strikes me as odd that these are simply named by their geographical grouping and I therefore question if they are actually representative of genealogical connectedness. I didn't find a clear answer when going through the sources, so I am also cautious about these results and my interpretation of them.
+
+With all these shortcomings of mine and the data in mind, I woud argue that the data ended up being mostly sufficient for what I set out to accomplish, although it ended up being less clear of a result than i initially anticipated, given my initial reading of the literature. Again, i would most likely attribute this to the data only covering a rather small part of the Australian languages.
 
 \newpage
 ## Bibliography

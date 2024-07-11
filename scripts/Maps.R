@@ -6,6 +6,10 @@ library(maps)
 
 #This script assumes you have run the DataWrangling.R script beforehand, as it mainly builds on it instead of repeating it.
 
+#register_stadiamaps(key = "ENTER YOUR OWN KEY HERE",
+#                    write = FALSE)
+
+
 map_AUS <- get_stadiamap(bbox = c(left = 113, 
                                   bottom = -44,
                                   right = 154,
@@ -32,7 +36,8 @@ map_AUS_family <- ggmap(map_AUS) +
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Families")
+  labs(color = "Families") +
+  ggtitle("Distribution of Languages in Australia")
 map_AUS_family
 
 ggsave(here("output/map_AUS_family.png"),
