@@ -29,21 +29,21 @@ glimpse(wals_value)
 
 wals_worder_PN <- wals_value %>% 
   filter( Chapter_ID == "81" &
-            Family == "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable") %>% 
+            Family == "Pama-Nyungan") %>% #filtering
+  rename("WordOrder" = "Name.CodeTable") %>% #renaming for clarity
   mutate(WordOrder = factor(WordOrder,
-                               levels = c("SOV",
-                                          "SVO",
-                                          "VOS",
-                                          "OSV",
-                                          "No dominant order")))
+                            levels = c("SOV",#reordering for neatness
+                                       "SVO",
+                                       "VOS",
+                                       "OSV",
+                                       "No dominant order")))
 
 wals_worder_nPN <- wals_value %>% 
   filter( Chapter_ID == "81" &
-            Family != "Pama-Nyungan") %>% 
-  rename("WordOrder" = "Name.CodeTable") %>% 
+            Family != "Pama-Nyungan") %>% #filtering
+  rename("WordOrder" = "Name.CodeTable") %>% #renaming for clarity
   mutate(WordOrder = factor(WordOrder,
-                            levels = c("SOV",
+                            levels = c("SOV",#reordering for neatness
                                        "SVO",
                                        "SVO or VOS",
                                        "OSV",
@@ -71,7 +71,7 @@ wals_cons_PN <- wals_value %>%
                                                  "Moderately small",
                                                  "Small")))
 
-#separating by Vowel Quality Inventories
+#separating by Vowel Quality Inventories, no ordering necessary
 wals_vowels_PN <- wals_value %>% 
   filter( Chapter_ID == "2" &
             Family == "Pama-Nyungan") %>% 
