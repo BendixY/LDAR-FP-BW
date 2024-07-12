@@ -1,6 +1,9 @@
 ---
-title: "Linguistic Data Analysis - Final Project"
-author: "Benedict Wüthrich 16-114-456"
+title: "Quantitatively exploring the Australian Languages"
+subtitle: "Final Paper for the Linguistic Data Analysis using R Course"
+#supervisor: "Dr. Sandra Auderset"
+author: "Benedict Wüthrich -- 16-114-456"
+#registration_number: "16-114-456"
 date: "`r Sys.Date()`"
 output: pdf_document
 ---
