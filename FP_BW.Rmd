@@ -24,7 +24,7 @@ library(viridis)
 library(rcldf)
 ```
 ## Introduction
-On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that aren't thought of as Pama-Nyungan and actually contain 27 different language families. Exactly which langauges belong to which category is an ongoing debate.
+On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that aren't thought of as Pama-Nyungan and actually contain 27 different language families. Exactly which languages belong to which category is an ongoing debate.
 
 Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both are having to compete against the English language.
 
@@ -38,10 +38,10 @@ In this paper I will be looking at the geographical distribution of the Australi
 ## Data
 The data used for this project originates from the cldf data by WALS. I initially intended to use the phoible cldf data as well, but ended up deciding against it as it did not add an appropriate amount of value to the final product.
 
-The data wrangling for this project was manageable, but took a lot of work to get started. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate dataframes eficiently and how to structure the creation of new dataframes from the given sets without creating too much redundancy.
-I created a seperate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required dataframes. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. The seperate scripts can be found in the corresponding GitHub repository, a link to which can be found at the end of this document.
+The data wrangling for this project was manageable, but took a lot of work to get started. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate data frames eficiently and how to structure the creation of new data frames from the given sets without creating too much redundancy.
+I created a separate Rscript file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this Data Wrangling script to be run first, so as to load the required data frames. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. The separate scripts can be found in the corresponding GitHub repository, a link to which can be found at the end of this document.
 
-I started out by loading in the cldf using the rcldf package. From this a wide dataframe was created using the Value Table and filtering for Australian languages only.
+I started out by loading in the cldf using the rcldf package. From this a wide data frame was created using the Value Table and filtering for Australian languages only.
 ```{r data_wrangling1, include=TRUE}
 
 ##loading in data from phoible and WALS and limiting them to languages spoken in Australia
@@ -58,11 +58,11 @@ wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>%
 
 ```
 
-Next up was creating seperate dataframes that specifically only included either Pama-Nyungan or Non-Pama-Nyungan languages and entries covering the word order feature. Additionaly, I renamed the relevent column to be more descriptive and therefore easier to work with, then mutated it into factors, so the different entries could be clearly ordered. In the case of the Non-Pama-Nyungan languages, another step was taken where I added in missing data into the relevant column, as it was entered as NA. Another column next to it had the missing data, so I manually added the entries back in.
+Next up was creating separate data frames that specifically only included either Pama-Nyungan or Non-Pama-Nyungan languages and entries covering the word order feature. Additionaly, I renamed the relevent column to be more descriptive and therefore easier to work with, then mutated it into factors, so the different entries could be clearly ordered. In the case of the Non-Pama-Nyungan languages, another step was taken where I added in missing data into the relevant column, as it was entered as NA. Another column next to it had the missing data, so I manually added the entries back in.
 
 ```{r data_wrangling2}
 ##Word Order Data Wrangling
-#creates two seperate df, for PN and nPN respectively.
+#creates two separate df, for PN and nPN respectively.
 
 wals_worder_PN <- wals_value %>% 
   filter( Chapter_ID == "81" &
@@ -85,15 +85,17 @@ wals_worder_nPN <- wals_value %>%
                                        "SVO or VOS",
                                        "OSV",
                                        "No dominant order"))) %>% 
-  mutate(WordOrder = case_when( #this bit was added as three languages didn't have entries in the new WordOrder Column. Thankfully the necessary information was in the Column next to it, so we add it back in
+  mutate(WordOrder = case_when( 
     Language_ID.ValueTable == "ung" ~ "OVS",
     Language_ID.ValueTable == "myi" ~ "OVS",
     Language_ID.ValueTable == "grr" ~ "No dominant order",  
-    TRUE ~ WordOrder))
+    TRUE ~ WordOrder))#this bit was added as three languages didn't have entries 
+#in the new WordOrder Column. Thankfully the necessary information was in the 
+#Column next to it, so we add it back in
 
 ```
 
-In a next step, I created several more data frames with the intention of looking at the phoneme inventory of the language families. The relevant features I picked to accomplish this task were the relative consonant inventory size, relative vowel quality inventory size and consonant to vowel ratio. 
+In a next step, I created several more data frames with the intention of looking at the phoneme inventory of the language families. The relevant features I picked to accomplish this task were the relative consonant inventory size, relative vowel quality inventory size and consonant to vowel ratio. Where helpful, I changed the relevant feature name to factors and ordered them in a reasonable way, so as to make the plots more easily readable in the end.
 
 ```{r data_wrangling3}
 ## Phoneme Inventory
@@ -162,7 +164,7 @@ wals_ratio_nPN <- wals_value %>%
 
 ## Analysis
 
-First off, let's see the distribution of Pama-Nyungan languages compared to Non-Pama Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing dataframe in order to make the legend of the final map more easily readable. Using this new dataframe, I plot the locations of the languages onto the map.
+First off, let's see the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing data frame in order to make the legend of the final map more easily readable. Using this new data frame, I plot the locations of the languages onto the map.
 
 ```{r AUS_map}
 
@@ -175,7 +177,9 @@ map_AUS <- get_stadiamap(bbox = c(left = 113,
                          color = "color")
 ggmap(map_AUS)
 
-#This map will show the distribution of PN and nPN languages. While reductionist, I want to make it easier to read, so I mutate all nPN languages to simply "Non-Pama-Nyungan"
+#This map will show the distribution of PN and nPN languages. 
+#While reductionist, I want to make it easier to read,
+#so I mutate all nPN languages to simply "Non-Pama-Nyungan"
 
 
 wals_nPN <- wals_value %>% 
@@ -202,12 +206,12 @@ This map clearly illustrates the distribution of Pama-Nyungan languages compared
 
 ### Word Order
 
-The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. I do not intend on making an exception in this matter either. To gain insight on the matter for the context of the Australian languages, I will be creating seperate maps for both Pama-Nyungan and Non-Pama-Nyungan, as well as seperate bar plots to explore the frequency of each within the respective categories.
+The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. I do not intend on making an exception in this matter either. To gain insight on the matter for the context of the Australian languages, I will be creating separate maps for both Pama-Nyungan and Non-Pama-Nyungan, as well as separate bar plots to explore the frequency of each within the respective categories.
 
 ```{r}
 
 #a different map that shows the dominant word order of Australian languages
-#first we need to filter for data that entails the Word order. This is chapter 81 of WALS. we further seperate them by PN and nPN
+#first we need to filter for data that entails the Word order. This is chapter 81 of WALS. we further sepraate them by PN and nPN
 
 ##PN
 map_PN_worder <- ggmap(map_AUS) +
@@ -242,7 +246,7 @@ map_nPN_worder
 #Note: the size of the dots was reduced compared to the code in Maps.R, so as to make the individual dots more clearly distinguishable after the pdf is knit.
 
 ```
-The maps paint an unlcear picture. There is little insight to be gained from these maps alone. Maybe one could argue that there's a slight concentration of Pama-Nyungan languages that prefer SOV word order within the outback of Australia. Though the northernmost part of Queensland also shows such a trend and it is hard to say if either is truly meaningful. Looking at the map regarding the Non-Pama-Nyungan languages, not much more can be said. There is an apparent general trend to not having a clear dominant order though. Let's plot the frequencies of the various word orders for the two language categories.
+The maps paint an unclear picture. There is little insight to be gained from these maps alone. Maybe one could argue that there's a slight concentration of Pama-Nyungan languages that prefer SOV word order within the outback of Australia. Though the northernmost part of Queensland also shows such a trend and it is hard to say if either is truly meaningful. Looking at the map regarding the Non-Pama-Nyungan languages, not much more can be said. There is an apparent general trend to not having a clear dominant order though. Let's plot the frequencies of the various word orders for the two language categories.
 
 
 ```{r plots}
@@ -278,8 +282,8 @@ histo_nPN_worder #getting a preview
 
 
 ```
-With this additional information, we can now more clearly see that the Pama-Nyungan languages have a very clear tendency of having a SOV word order, as almost half of all languages in the dataset have this as their dominant word order. The trend of starting off a sentence with the Subject continues, with six more languages having a SVO word order. Having no dominant word order is also quite common in this dataset, with a tital of 18 languages fitting that profile. Only a small minority, a total of three languages, have a word order that does not fit those three major categories.  
-The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majoriy of those who do have one, will have one that starts their word order with the subject of the sentence. 
+With this additional information, we can now more clearly see that the Pama-Nyungan languages have a very clear tendency of having a SOV word order, as almost half of all languages in the dataset have this as their dominant word order. The trend of starting off a sentence with the Subject continues, with six more languages having a SVO word order. Having no dominant word order is also quite common in this dataset, with a total of 18 languages fitting that profile. Only a small minority, a total of three languages, have a word order that does not fit those three major categories.  
+The Non-Pama-Nyungan languages show a similar pattern. Although here the clear majority does not have a dominant word order, the majority of those who do have one, will have one that starts their word order with the subject of the sentence. 
 
 Circling back to the Pama-Nyungan languages, let's look at the Word Order distribution if we separate them by Genus. This might give us additional insight into the regional distribution of word order in Australia.
 
@@ -298,7 +302,7 @@ histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
 histogram_PNGenus_worder #getting a preview
 
 ```
-One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geograhical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantely without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
+One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geographical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantly without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
 
 ### Phoneme Inventory
 
@@ -365,7 +369,7 @@ histo_nPN_vowels #getting a preview
 
 ```
 
-It is apparent that the Non-Pama-Nyungan languages also tend towards rather small consonant inventories, even more so than the Pama-Nyungan languages, as here we do not find any languages with a large or moderately large consonant inventory at all. But the Non-Pama-Nyungan languages are starkly contrasting thei Pama-Nyungan couterparts when it comes to vowel inventories. There are a lot more Non-Pama-Nyungan languages that have a vowel quality inventory larger than 4, though the majority is still slightly tending towards a smaller inventory of 4 or less.  
+It is apparent that the Non-Pama-Nyungan languages also tend towards rather small consonant inventories, even more so than the Pama-Nyungan languages, as here we do not find any languages with a large or moderately large consonant inventory at all. But the Non-Pama-Nyungan languages are starkly contrasting their Pama-Nyungan counterparts when it comes to vowel inventories. There are a lot more Non-Pama-Nyungan languages that have a vowel quality inventory larger than 4, though the majority is still slightly tending towards a smaller inventory of 4 or less.  
 Lastly, let's compare the Consonant to Vowel Ratio of Pama-Nyungan and Non-Pama-Nyungan languages.
 
 ```{r cons to vowel ratios}
@@ -397,18 +401,18 @@ histo_nPN_ratio <- ggplot(data = wals_ratio_nPN,
 histo_nPN_ratio #getting a preview
 
 ```
-Unsurprisingly, the Pama-Nyungan languages show a generally higher ratio of consonants to vowels. This is driven bth by their generally slightly bigger consonant inventories and consistently smaller vowel quality inventories respectively. It is worth noting that there is still one Pama-Nyungan language that has a moderately low ratio, which is unexpected given the data.  The Non-Pama-Nyungan languages generally tend towards having a moderately high or average consonant to vowel ratio. Here we again have a single outlier that shows a moderately low ratio.  
-It is worth noting that the datapoints for all of these sets are significantly smaller than the ones regarding word order.
+Unsurprisingly, the Pama-Nyungan languages show a generally higher ratio of consonants to vowels. This is driven both by their generally slightly bigger consonant inventories and consistently smaller vowel quality inventories respectively. It is worth noting that there is still one Pama-Nyungan language that has a moderately low ratio, which is unexpected given the data.  The Non-Pama-Nyungan languages generally tend towards having a moderately high or average consonant to vowel ratio. Here we again have a single outlier that shows a moderately low ratio.  
+It is worth noting that the data points for all of these sets are significantly smaller than the ones regarding word order.
 
 ## Discussion
 
-A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 datapoints, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 datapoints each, so less than 5% of total Pama-Nyungan languages.  While a clear number of Non-Pama-Nyungan languages was not found in the literature considered, it is likely that the discrepancy is similar, though not as significantly.  
+A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 data points, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 data points each, so less than 5% of total Pama-Nyungan languages.  While a clear number of Non-Pama-Nyungan languages was not found in the literature considered, it is likely that the discrepancy is similar, though not as significantly.  
 
-Another important aspect to be aware of is the handwaiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
+Another important aspect to be aware of is the hand waiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
 
-Finally, I wonder about the accuracy of the genus data that I used in the bar plot where I visually separated the Word Order occurences by genera of Pama-Nyungan languages. It strikes me as odd that these are simply named by their geographical grouping and I therefore question if they are actually representative of genealogical connectedness. I didn't find a clear answer when going through the sources, so I am also cautious about these results and my interpretation of them.
+Finally, I wonder about the accuracy of the genus data that I used in the bar plot where I visually separated the Word Order occurrences by genera of Pama-Nyungan languages. It strikes me as odd that these are simply named by their geographical grouping and I therefore question if they are actually representative of genealogical connectedness. I didn't find a clear answer when going through the sources, so I am also cautious about these results and my interpretation of them.
 
-With all these shortcomings of mine and the data in mind, I woud argue that the data ended up being mostly sufficient for what I set out to accomplish, although it ended up being less clear of a result than i initially anticipated, given my initial reading of the literature. Again, i would most likely attribute this to the data only covering a rather small part of the Australian languages.
+With all these shortcomings of mine and the data in mind, I would argue that the data ended up being mostly sufficient for what I set out to accomplish, although it ended up being less clear of a result than i initially anticipated, given my initial reading of the literature. Again, i would most likely attribute this to the data only covering a rather small part of the Australian languages.
 
 \newpage
 ## Bibliography
