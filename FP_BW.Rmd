@@ -269,7 +269,7 @@ histo_PN_worder <- ggplot(data = wals_worder_PN,
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Frequency of Word Orders in the Pama-Nyunga Languages") # adding a descriptive title
+  ggtitle("Frequency of Word Orders in the Pama-Nyungan Languages") # adding a descriptive title
 histo_PN_worder #getting a preview
 
 
@@ -282,7 +282,7 @@ histo_nPN_worder <- ggplot(data = wals_worder_nPN,
   labs(y = "Number of Languages",
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
-  scale_fill_colorblind(guide = none) +
+  scale_fill_colorblind(guide = FALSE) +
   ggtitle("Frequency of Word Orders in the Non-Pama-Nyungan Languages") # adding a descriptive title
 histo_nPN_worder #getting a preview
 
@@ -325,7 +325,7 @@ map_PN_worder_genus <- ggmap(map_AUS) +
 map_PN_worder_genus #getting a preview
 
 ```
-One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geographical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantly without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
+One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geographical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, though the bar plot would have us infer the opposite. Taking the map into consideration, this theory seems somewhat more plausible, as it is indeed the languages spoken more closely to the Non-Pama-Nyungan languages that do not have a dominant word order. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantly without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
 
 ### Phoneme Inventory
 
@@ -429,13 +429,13 @@ It is worth noting that the data points for all of these sets are significantly 
 
 ## Discussion
 
-A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 data points, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 data points each, so less than 5% of total Pama-Nyungan languages.  While a clear number of Non-Pama-Nyungan languages was not found in the literature considered, it is likely that the discrepancy is similar, though not as significantly.  
+A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 data points, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 data points each, so less than 5% of total Pama-Nyungan languages.  With a total of 139 Australian languages on glottolog not considered part of the Pama-Nyungan family(Hammarström et al, 2024), the discrepancies are similar, with only 29% of them considered in the data regarding word order and only around 11% in the data points regarding the Phoneme Inventory.  
 
 Another important aspect to be aware of is the hand waiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related, if at all, as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
 
 Finally, I wonder about the accuracy of the genus data that I used in the bar plot where I visually separated the Word Order occurrences by genera of Pama-Nyungan languages. It strikes me as odd that these are simply named by their geographical grouping and I therefore question if they are actually representative of genealogical connectedness. I didn't find a clear answer when going through the sources, so I am also cautious about these results and my interpretation of them.
 
-With all these shortcomings of mine and the data in mind, I would argue that the data ended up being mostly sufficient for what I set out to accomplish, although it ended up being less clear of a result than i initially anticipated, given my initial reading of the literature. Again, i would most likely attribute this to the data only covering a rather small part of the Australian languages.
+With all these shortcomings of mine and the data in mind, I would argue that the data ended up being mostly sufficient for what I set out to accomplish, although it ended up being less clear of a result than I initially anticipated, given my initial reading of the literature. Again, I would most likely attribute this to the data only covering a rather small part of the Australian languages.
 
 \newpage
 ## Bibliography
@@ -445,6 +445,7 @@ Bowern, Claire / Koch, Harold (Publ.) (2004): Australian Languages. Classificati
 Dixon, R.M.W. (1980): The Languages of Australia. Cambridge: Cambridge University Press.  
 Dixon, R.M.W. (2004): Australian Languages. Their Nature and Development. Cambridge: Cambridge University Press.  
 Greenhill, Simon (2024). rcldf: rcldf - Read Linguistic Data In The Cross Linguistic Data Format (CLDF)_. R package version 1.2.0, commit 3979a89dbe4db653873caca62212fc07ebb966e9, https://github.com/SimonGreenhill/rcldf  
+Hammarström, Harald & Forkel, Robert & Haspelmath, Martin & Bank, Sebastian. 2024. Glottolog 5.0. Leipzig: Max Planck Institute for Evolutionary Anthropology. https://doi.org/10.5281/zenodo.10804357 (Available online at http://glottolog.org, Accessed on 2024-08-22.)  
 Kahle, D., Wickham, H. ggmap: Spatial Visualization with ggplot2. The R Journal, 5(1), 144-161. http://journal.r-project.org/archive/2013-1/kahle-wickham.pdf  
 Matthew S. Dryer. (2013) Order of Subject, Object and Verb. In: Dryer, Matthew S. & Haspelmath, Martin (eds.) WALS Online (v2020.3) [Data set]. Zenodo. https://doi.org/10.5281/zenodo.7385533 (Available online at http://wals.info/chapter/81, Accessed on 2024-04-16.)  
 Moran, Steven & McCloy, Daniel (eds.) 2019. PHOIBLE. Jena: Max Planck Institute for the Science of Human History. (Available online at https://phoible.org)  
