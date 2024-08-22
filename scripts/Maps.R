@@ -97,3 +97,29 @@ ggsave(here("output/map_nPN_worder.png"),
        units = "cm",
        dpi = 600)
 
+
+
+
+map_PN_worder_genus <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_PN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = Genus,
+                  shape = WordOrder),
+             show.legend = T,
+             size = 4) + #might be a bit too small for the size I save it as, but overlapping dots are easier to make out
+  #theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Genus",
+       shape = "Dominant Word Order") +
+  ggtitle("Geographic distribution of Word Order in Pama-Nyungan languages")
+map_PN_worder_genus
+
+
+ggsave(here("output/map_PN_worder_genus.png"),
+       map_PN_worder_genus,
+       width = 30,
+       height = 30,
+       units = "cm",
+       dpi = 600)
