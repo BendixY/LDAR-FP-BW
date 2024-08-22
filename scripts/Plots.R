@@ -35,8 +35,8 @@ ggsave(here("output/histo_PN_worder.png"),
 
 #Worder Plot for PM, fill = genus
 histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
-                              aes(x = WordOrder,
-                                  fill = Genus)) +
+                              aes(x = Genus,
+                                  fill = WordOrder)) +
   geom_histogram(stat = "count") + # defining the type of plot
   labs(y = "Number of Languages",
        x = "Word Order") + # renaming the axes

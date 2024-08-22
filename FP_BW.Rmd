@@ -297,8 +297,8 @@ Circling back to the Pama-Nyungan languages, let's look at the Word Order distri
 
 #Worder Plot for PM, fill = genus
 histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
-                              aes(x = WordOrder,
-                                  fill = Genus)) +
+                              aes(x = Genus,
+                                  fill = WordOrder)) +
   geom_histogram(stat = "count") + # defining the type of plot
   labs(y = "Number of Languages",
        x = "Word Order") + # renaming the axes
@@ -306,6 +306,23 @@ histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
   scale_fill_colorblind() +
   ggtitle("Frequency of Word Orders in Pama-Nyungan Subfamilies") # adding a descriptive title
 histogram_PNGenus_worder #getting a preview
+
+
+map_PN_worder_genus <- ggmap(map_AUS) +
+  geom_point(data = wals_worder_PN,
+             aes( x = Longitude,
+                  y = Latitude,
+                  color = Genus,
+                  shape = WordOrder),
+             show.legend = T,
+             size = 4) + #might be a bit too small for the size I save it as, but overlapping dots are easier to make out
+  #theme_map() +
+  theme(legend.text = element_text(size = 10),
+        legend.title = element_text(size = 12)) +
+  labs(color = "Genus",
+       shape = "Dominant Word Order") +
+  ggtitle("Geographic distribution of Word Order in Pama-Nyungan languages")
+map_PN_worder_genus #getting a preview
 
 ```
 One thing that becomes apparent immediately when considering this plot is the fact that the Northern Pama-Nyungan languages have a disproportionate amount of SOV word order languages when compared to the other families. It is possible that their geographical proximity to the Non-Pama-Nyungan languages might be an explanation for this phenomenon, though in that case we might also expect the Northern Pama-Nyungan languages to show a tendency towards a lack of dominant word order, but this plot would have us infer the opposite. The Central Pama-Nyungan languages have a very similar distribution profile as the Northern ones, albeit not as extreme. The Southeastern Pama-Nyungan languages seem to be the most different compared to their counterparts. While at first glance appearing to have a general lack of dominant word order like many of the others, they also have a distinctly small number of languages with a SOV word order system, with only one language in the dataset fitting that description. Lastly, the Western Pama-Nyungan languages appear almost prototypical for the language family in general, as they are predominantly without dominant word order, closely followed by the SOV and SVO word orders. Their complete lack of other word orders also correlates with the general rarity of those in the overall dataset.
