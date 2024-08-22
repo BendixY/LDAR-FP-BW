@@ -1,5 +1,5 @@
 ---
-title: "Quantitatively exploring the Australian Languages"
+title: "Quantitatively exploring Australian Languages"
 subtitle: "Final Paper for the Linguistic Data Analysis using R Course"
 #supervisor: "Dr. Sandra Auderset"
 author: "Benedict Wüthrich -- 16-114-456"
@@ -27,15 +27,15 @@ library(viridis)
 library(rcldf)
 ```
 ## Introduction
-On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that aren't thought of as Pama-Nyungan and actually contain 27 different language families. Exactly which languages belong to which category is an ongoing debate(Bowern & Koch, 2004).
+On the Australian continent there are over 333 reported languages which can be roughly categorized into either Pama-Nyungan languages or Non-Pama-Nyungan languages. It is important to note that the latter does not imply any genealogical link of the included languages, while the former has been shown as a cohesive language family. Non-Pama-Nyungan is more of a collective term for Australian languages that are not thought of as Pama-Nyungan and actually covers at least different language families. Exactly which languages belong to which family is an ongoing debate(Bowern & Koch, 2004).
 
-Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both are having to compete against the English language.
+Pama-Nyungen languages have been spoken for over 5000 years, make up over 306 different identified languages and the speakers cover about 80% of the landmass (Bouckaert 2018, 741). Given this long history, it is likely that the Pama-Nyungan languages have been competing against Non-Pama-Nyungan languages for a long time and ended up limiting the Non-Pama-Nyungan languages to the northernmost part of the continent. Nowadays, both have to compete against the English language.
 
-One of the main actors in describing Australian languages is Robert M. W. Dixon. With "The Languages of Australia", he has published a comprehensive description of Australian languages as early as 1980 and another study of Australian Languages in 2004 in his monograph "Australian Languages. Their Nature and Development". But these works were not without their controversy. Dixon vehemently denied the applicability of the comparative method on Australian Languages, which lead to a rather large amount of discussion surrounding his works. Claire Bowern and Harold Koch wrote "Australian Languages. Classification and the comparative method". Dixon's skepticism is described as an erroneous phylogenetic assessment which is "so bizarrely faulted, and such an insult to the eminently successful practitioners of Comparative Method Linguistics in Australia, that it positively demands a decisive riposte."(O’Grady and Hale in Bowern and Koch, 2004: 69), which serves as a perfect summary for what the book tries to achieve.
+One of the main actors in describing Australian languages is Robert M. W. Dixon. With "The Languages of Australia", he published a comprehensive description of Australian languages as early as 1980 and another study of Australian languages in 2004 in his monograph "Australian languages. Their Nature and Development". But these works are not without controversy. Dixon vehemently denied the applicability of the comparative method on Australian languages, which lead to discussion surrounding his works. Claire Bowern and Harold Koch wrote "Australian languages. Classification and the comparative method". Dixon's skepticism is described as an erroneous phylogenetic assessment which is "so bizarrely faulted, and such an insult to the eminently successful practitioners of Comparative Method Linguistics in Australia, that it positively demands a decisive riposte."(O’Grady and Hale in Bowern and Koch, 2004: 69), which serves as a perfect summary for what the book tries to achieve.
 
-In more recent publications, like the paper by Bouckaert et al. (2018), computer-assisted methods have gained ground. This paper specifically deals with the genealogy of Pama-Nyungan languages. Using their data consisting of basic vocabulary of 306 different Pama-Nyungan languages, they created a phylogenetic tree that shows the diversification of the Pama-Nyungan language family. Additionally, the same data was used to find a likely homeland of the family, which they postulated to be in the Gulf Plains region.
+In more recent publications, such as the paper by Bouckaert et al. (2018), computer-assisted methods have gained ground. This paper specifically deals with the genealogy of Pama-Nyungan languages. Using their data consisting of basic vocabulary of 306 different Pama-Nyungan languages, the authors created a phylogenetic tree that shows the diversification of the Pama-Nyungan language family. Additionally, the same data was used to find a likely homeland of the family, which they postulated to be in the Gulf Plains region.
 
-In this paper I will be looking at the geographical distribution of the Australian languages and how they compare to each other in terms of categorical features such as word order and phonemic inventory. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category. The goal is to gain an understanding of how these features are represented in the two "families" and if any conclusion can be drawn regarding contact of them. 
+In this paper I explore the geographical distribution of the Australian languages and how they compare to each other in terms of typological features such as word order and phonemic inventory. To make this both simpler to understand as well as simpler to execute, I will be adopting the reductionist point of view of pooling the Non-Pama-Nyungan languages into a single category. The goal is to gain an understanding of how these features are distributed in the two "families" and if any conclusion can be drawn regarding contact of them. 
 
 
 ## Data
@@ -44,7 +44,7 @@ The data used for this project originates from the cldf data by WALS. I initiall
 The data wrangling for this project was manageable, but took a lot of work to get started. The biggest challenge posed was figuring out how to load cldf dataset into R and how to manipulate it appropriately. I struggled with that part for a while as it also had me refresh my memory on how to manipulate data frames efficiently and how to structure the creation of new data frames from the given sets without creating too much redundancy.
 I created a separate R script file that entails all the necessary data wrangling and manipulation for the different plots and maps used in this project. The other scripts rely on this data wrangling script to be run first, so as to load the required data frames into the global environment. This Rmarkdown file compiles them all into one coherent document, though without saving the plots and maps again. The separate scripts can be found in the corresponding GitHub repository, a link to which can be found at the end of this document.
 
-I started out by loading in the cldf using the rcldf package. From this a wide data frame was created using the value table and filtering for Australian languages only.
+I started out by loading in the cldf using the rcldf package. From this a wide data frame was created using the value table and filtering for Australian languages.
 ```{r data_wrangling1, include=TRUE}
 
 ##loading in data from phoible and WALS and limiting them to languages spoken in Australia
@@ -56,7 +56,7 @@ wals_cldf <- cldf(here("data/WALS/cldf"))
 # this last line was commented out to streamline this pdf
 
 #This creates a tibble that will be manipulated further at different points.
-wals_value <- as.cldf.wide(wals_cldf, "ValueTable") %>% 
+wals_value_aus <- as.cldf.wide(wals_cldf, "ValueTable") %>% 
   filter(Macroarea == "Australia")
 
 ```
@@ -67,8 +67,8 @@ Next up was creating separate data frames that specifically only included either
 ##Word Order Data Wrangling
 #creates two separate df, for PN and nPN respectively.
 
-wals_worder_PN <- wals_value %>% 
-  filter( Chapter_ID == "81" &
+wals_worder_PN <- wals_value_aus %>% 
+  filter(Chapter_ID == "81" &
             Family == "Pama-Nyungan") %>% #filtering
   rename("WordOrder" = "Name.CodeTable") %>% #renaming for clarity
   mutate(WordOrder = factor(WordOrder,
@@ -78,7 +78,7 @@ wals_worder_PN <- wals_value %>%
                                           "OSV",
                                           "No dominant order")))
 
-wals_worder_nPN <- wals_value %>% 
+wals_worder_nPN <- wals_value_aus %>% 
   filter( Chapter_ID == "81" &
             Family != "Pama-Nyungan") %>% #filtering
   rename("WordOrder" = "Name.CodeTable") %>% #renaming for clarity
@@ -106,7 +106,7 @@ In a next step, I created several more data frames with the intention of looking
 
 ###PN
 #separating by ConsonantInventories
-wals_cons_PN <- wals_value %>% 
+wals_cons_PN <- wals_value_aus %>% 
   filter( Chapter_ID == "1" &
             Family == "Pama-Nyungan") %>% 
   rename("ConsonantInventories" = "Name.CodeTable") %>% 
@@ -118,14 +118,14 @@ wals_cons_PN <- wals_value %>%
                                                  "Small")))
 
 #separating by Vowel Quality Inventories
-wals_vowels_PN <- wals_value %>% 
+wals_vowels_PN <- wals_value_aus %>% 
   filter( Chapter_ID == "2" &
             Family == "Pama-Nyungan") %>% 
   rename("VowelQualityInventories" = "Name.CodeTable")
 
 
 #separating for Consonant/Vowel Ratio and ordering the levels
-wals_ratio_PN <- wals_value %>% 
+wals_ratio_PN <- wals_value_aus %>% 
   filter( Chapter_ID == "3" &
             Family == "Pama-Nyungan") %>% 
   rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
@@ -137,7 +137,7 @@ wals_ratio_PN <- wals_value %>%
 
 ###nPN
 #separating by ConsonantInventories
-wals_cons_nPN <- wals_value %>% 
+wals_cons_nPN <- wals_value_aus %>% 
   filter( Chapter_ID == "1" &
             Family != "Pama-Nyungan") %>% 
   rename("ConsonantInventories" = "Name.CodeTable") %>% 
@@ -147,14 +147,14 @@ wals_cons_nPN <- wals_value %>%
                                                   "Small")))
 
 #separating by Vowel Quality Inventories
-wals_vowels_nPN <- wals_value %>% 
+wals_vowels_nPN <- wals_value_aus %>% 
   filter( Chapter_ID == "2" &
             Family != "Pama-Nyungan") %>% 
   rename("VowelQualityInventories" = "Name.CodeTable")
 
 
 #separating for Consonant/Vowel Ratio and ordering the levels
-wals_ratio_nPN <- wals_value %>% 
+wals_ratio_nPN <- wals_value_aus %>% 
   filter( Chapter_ID == "3" &
             Family != "Pama-Nyungan") %>% 
   rename("ConsonantVowelRatio" = "Name.CodeTable") %>% 
@@ -167,7 +167,7 @@ wals_ratio_nPN <- wals_value %>%
 
 ## Analysis
 
-First off, let's see the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing data frame in order to make the legend of the final map more easily readable. Using this new data frame, I plot the locations of the languages onto the map.
+First off, I explore the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. To do this, I first load a map of Australia through stadiamap. Next, I modify an existing data frame in order to make the legend of the final map more easily readable. Using this new data frame, I plot the locations of the languages onto the map.
 
 ```{r AUS_map}
 
@@ -185,7 +185,7 @@ ggmap(map_AUS)
 #so I mutate all nPN languages to simply "Non-Pama-Nyungan"
 
 
-wals_nPN <- wals_value %>% 
+wals_nPN <- wals_value_aus %>% 
   mutate(Family = if_else(Family == "Pama-Nyungan", "Pama-Nyungan", "Non-Pama-Nyungan"))
 
 map_AUS_family <- ggmap(map_AUS) +
@@ -198,18 +198,18 @@ map_AUS_family <- ggmap(map_AUS) +
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Families")+
+  labs(color = "Family")+
   ggtitle("Distribution of Languages in Australia")
 map_AUS_family
 
 
 
 ```
-This map clearly illustrates the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. The latter is, with a few exceptions, visibly confined to the northernmost part of Australia, whereas the Pama-Nyungan languages are spread all throughout the continent.
+This map illustrates the distribution of Pama-Nyungan languages compared to Non-Pama-Nyungan languages. The latter are, with a few exceptions, visibly confined to the northernmost part of Australia, whereas the Pama-Nyungan languages are spread all throughout the continent.
 
 ### Word Order
 
-The word order of different languages is described as "perhaps the single most frequently cited typological feature of languages" by Dryer and Haspelmath on the website concerning the Chapter about word order. I do not intend on making an exception in this matter either. To gain insight on the matter for the context of the Australian languages, I will be creating separate maps for both Pama-Nyungan and Non-Pama-Nyungan, as well as separate bar plots to explore the frequency of each within the respective categories.
+Matthew Dryer describes the word order of different languages as "perhaps the single most frequently cited typological feature of languages" (Dryer, 2013). I do not intend on making an exception in this matter either. To gain insight on the matter for the context of the Australian languages, I will be creating separate maps for both Pama-Nyungan and Non-Pama-Nyungan, as well as separate bar plots to explore the frequency of each within the respective categories.
 
 ```{r}
 
@@ -282,7 +282,7 @@ histo_nPN_worder <- ggplot(data = wals_worder_nPN,
   labs(y = "Number of Languages",
        x= "Word Order") + # renaming the axes
   theme_bw() + # adjusting the theme
-  scale_fill_colorblind(guide = FALSE) +
+  scale_fill_colorblind(guide = none) +
   ggtitle("Frequency of Word Orders in the Non-Pama-Nyungan Languages") # adding a descriptive title
 histo_nPN_worder #getting a preview
 
@@ -312,7 +312,7 @@ One thing that becomes apparent immediately when considering this plot is the fa
 
 ### Phoneme Inventory
 
-Next up, I will be looking at the phoneme inventories of the two language families. As the data by WALS does not give explicit data on that but rather simply ranges of inventory sizes, I will try my best to gain some meaningful insight from this approach.  
+Next, I will be looking at the phoneme inventories of the two language families. As the data by WALS does not give explicit data on that but rather simply ranges of inventory sizes, I will try my best to gain some meaningful insight from this approach.  
 Let's start off by comparing the consonant inventories of Pama-Nyungan and Non-Pama-Nyungan.
 
 ```{r pn cons and vow}
@@ -326,7 +326,7 @@ histo_PN_cons <- ggplot(data = wals_cons_PN,
        x= "Size of Consonant Inventory") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Sizes of Consonant Inventories in Pama-Nyunga Languages") # adding a descriptive title
+  ggtitle("Sizes of Consonant Inventories in Pama-Nyungan Languages") # adding a descriptive title
 histo_PN_cons #getting a preview
 
 #Vowel Quality Inventory
@@ -338,7 +338,7 @@ histo_PN_vowels <- ggplot(data = wals_vowels_PN,
        x= "Size of Vowel Quality Inventory") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Sizes of Vowel Quality Inventories in Pama-Nyunga Languages") # adding a descriptive title
+  ggtitle("Sizes of Vowel Quality Inventories in Pama-Nyungan Languages") # adding a descriptive title
 histo_PN_vowels #getting a preview
 
 ```
@@ -390,7 +390,7 @@ histo_PN_ratio <- ggplot(data = wals_ratio_PN,
        x= "Consonant to Vowel Ratio") + # renaming the axes
   theme_bw() + # adjusting the theme
   scale_fill_colorblind(guide = FALSE) +
-  ggtitle("Ratios of Consonants to Vowels in Pama-Nyunga Languages") # adding a descriptive title
+  ggtitle("Ratios of Consonants to Vowels in Pama-Nyungan Languages") # adding a descriptive title
 histo_PN_ratio #getting a preview
 
 #nPN
@@ -414,7 +414,7 @@ It is worth noting that the data points for all of these sets are significantly 
 
 A major point to consider when evaluating all of this data is the fact that it does not cover a representative part of the language families. As established in the introduction, there are over 300 different Pama-Nyungan languages, yet the dataset for word order contained only 49 data points, so only around 15%. Looking at the Phoneme Inventory is even worse, with only around 15 data points each, so less than 5% of total Pama-Nyungan languages.  While a clear number of Non-Pama-Nyungan languages was not found in the literature considered, it is likely that the discrepancy is similar, though not as significantly.  
 
-Another important aspect to be aware of is the hand waiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
+Another important aspect to be aware of is the hand waiving of pooling all the Non-Pama-Nyungan languages into one group. This category actually consists of many different language families altogether that are not nearly as closely related, if at all, as all the Pama-Nyungan languages are, so every conclusion drawn about Non-Pama-Nyungan languages in general should be taken with that in mind.
 
 Finally, I wonder about the accuracy of the genus data that I used in the bar plot where I visually separated the Word Order occurrences by genera of Pama-Nyungan languages. It strikes me as odd that these are simply named by their geographical grouping and I therefore question if they are actually representative of genealogical connectedness. I didn't find a clear answer when going through the sources, so I am also cautious about these results and my interpretation of them.
 
