@@ -33,10 +33,22 @@ ggsave(here("output/histo_PN_worder.png"),
        dpi = 600)
 
 
-#Worder Plot for PM, fill = genus
-histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
-                              aes(x = Genus,
-                                  fill = WordOrder)) +
+#adapting the df to make the plot more readable in the end
+
+wals_worder_PN_readable <- wals_worder_PN %>%
+  mutate(Genus = case_when(
+    Genus == "Central Pama-Nyungan" ~ "Central",
+    Genus == "Northern Pama-Nyungan" ~ "Northern",
+    Genus == "Southeastern Pama-Nyungan" ~ "Southeastern",
+    Genus == "Western Pama-Nyungan" ~ "Western",
+    TRUE ~ Genus # Keep other values unchanged
+  ))
+
+
+#Worder Plot for PM, x = genus
+histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN_readable),
+                                   aes(x = Genus,
+                                       fill = WordOrder)) +
   geom_histogram(stat = "count") + # defining the type of plot
   labs(y = "Number of Languages",
        x = "Word Order") + # renaming the axes

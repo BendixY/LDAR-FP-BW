@@ -36,7 +36,7 @@ map_AUS_family <- ggmap(map_AUS) +
   theme_map() + #removes axes labels and puts the legend in bottom left corner of map
   theme(legend.text = element_text(size = 10),
         legend.title = element_text(size = 12)) +
-  labs(color = "Families") +
+  labs(color = "Family") +
   ggtitle("Distribution of Languages in Australia")
 map_AUS_family
 

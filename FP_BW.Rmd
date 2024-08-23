@@ -294,9 +294,20 @@ The Non-Pama-Nyungan languages show a similar pattern. Although here the clear m
 Circling back to the Pama-Nyungan languages, let's look at the Word Order distribution if we separate them by genus. This might give us additional insight into the regional distribution of word order in Australia.
 
 ```{r genus worder plot}
+#adapting the df to make the plot more readable in the end
 
-#Worder Plot for PM, fill = genus
-histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN),
+wals_worder_PN_readable <- wals_worder_PN %>%
+  mutate(Genus = case_when(
+    Genus == "Central Pama-Nyungan" ~ "Central",
+    Genus == "Northern Pama-Nyungan" ~ "Northern",
+    Genus == "Southeastern Pama-Nyungan" ~ "Southeastern",
+    Genus == "Western Pama-Nyungan" ~ "Western",
+    TRUE ~ Genus # Keep other values unchanged
+  ))
+
+
+#Worder Plot for PM, x = genus
+histogram_PNGenus_worder <- ggplot(data = filter(wals_worder_PN_readable),
                               aes(x = Genus,
                                   fill = WordOrder)) +
   geom_histogram(stat = "count") + # defining the type of plot
